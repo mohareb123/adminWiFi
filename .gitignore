@@ -11,3 +11,5 @@ npm-debug.log*
 *.tsbuildinfo
 .arena/
 .local-vault/
+apk-release-body.md
+verify.txt

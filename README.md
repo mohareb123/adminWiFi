@@ -2,6 +2,9 @@
 
 ### مدير الراوتر الشامل — **Universal Router Adaptation System**
 
+[![Android APK](https://github.com/mohareb123/adminWiFi/actions/workflows/android.yml/badge.svg)](https://github.com/mohareb123/adminWiFi/actions/workflows/android.yml)
+[![APK download](https://img.shields.io/badge/APK-%D8%AA%D8%AD%D9%85%D9%8A%D9%84%20%D8%A7%D9%84%D8%AA%D8%B7%D8%A8%D9%8A%D9%82-2ea043)](https://github.com/mohareb123/adminWiFi/releases/tag/apk-latest)
+
 > **المطوّر:** محمد إبراهيم أبو العز — *Mohamed Ibrahim Abu El-Ezz*
 > **الهوية:** ABU ELAZ ULTRA MAN
 > **© 2026 Mohamed Ibrahim Abu El-Ezz — All Rights Reserved.**
@@ -10,7 +13,7 @@ A professional router/network management app that adapts itself to the router it
 of forcing you to learn each vendor's menus. Arabic-first, verification-first, and built so it
 *feels lighter than it looks*.
 
-**الإصدار 1.0.0** · Web (PWA) + local bridge + **تطبيق أندرويد (APK)** — [تحميل الـ APK من صفحة الإصدارات ›](../../releases)
+**الإصدار 1.0.0** · Web (PWA) + local bridge + **تطبيق أندرويد (APK)** — [⬇︎ تحميل الـ APK (إصدار `apk-latest`)](https://github.com/mohareb123/adminWiFi/releases/tag/apk-latest)
 
 ---
 
@@ -69,9 +72,10 @@ an explicit confirmation), automation rules, and the full technical detail of ev
 
 ## APK — التطبيق الكامل على الهاتف (بدون كمبيوتر)
 
-**حمّل الـ APK:** افتح **Releases → `apk-latest`** في هذا المستودع، ونزّل
-`universal-router-manager-1.0.0.apk`، ثم ثبّته على هاتفك (اسمح بالتثبيت من مصادر غير معروفة
-مرة واحدة).
+**حمّل الـ APK:** [صفحة الإصدار `apk-latest`](https://github.com/mohareb123/adminWiFi/releases/tag/apk-latest)
+→ نزّل `universal-router-manager-1.0.0.apk` → ثبّته على هاتفك (اسمح بالتثبيت من مصادر غير معروفة
+مرة واحدة). الملف يُبنى تلقائيًا على GitHub Actions، والتحقق من محتواه (اسم الحزمة، الأذونات،
+وجود محرّك التشغيل داخل الحزمة، بصمة sha256) يُنشر مع كل إصدار.
 
 ماذا يعني «كامل» هنا؟ **المحرّك نفسه يعمل داخل الهاتف**:
 
