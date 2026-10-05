@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Universal Router Manager">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4dd8ff"/>
+      <stop offset="1" stop-color="#8b7cff"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#04060e"/>
+  <g fill="none" stroke="url(#g)" stroke-linecap="round">
+    <path d="M104 300c34-60 82-90 152-90s118 30 152 90" stroke-width="24"/>
+    <path d="M150 360c26-44 60-66 106-66s80 22 106 66" stroke-width="20" opacity=".75"/>
+  </g>
+  <circle cx="256" cy="196" r="34" fill="url(#g)"/>
+  <rect x="150" y="392" width="212" height="60" rx="20" fill="url(#g)" opacity=".9"/>
+  <circle cx="196" cy="422" r="10" fill="#04060e"/>
+  <circle cx="232" cy="422" r="10" fill="#04060e"/>
+</svg>

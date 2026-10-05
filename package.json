@@ -1,0 +1,31 @@
+{
+  "name": "universal-router-manager",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Universal Router Manager — Universal Router Adaptation System. Developed by Mohamed Ibrahim Abu El-Ezz.",
+  "author": "Mohamed Ibrahim Abu El-Ezz <mohareb123>",
+  "license": "UNLICENSED",
+  "copyright": "© 2026 Mohamed Ibrahim Abu El-Ezz — All Rights Reserved.",
+  "workspaces": [
+    "packages/core",
+    "packages/bridge",
+    "packages/web",
+    "packages/mobile"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "npm run dev -w @urlm/bridge & npm run dev -w @urlm/web",
+    "dev:bridge": "npm run dev -w @urlm/bridge",
+    "dev:web": "npm run dev -w @urlm/web",
+    "build": "npm run build -w @urlm/core && npm run build -w @urlm/bridge && npm run build -w @urlm/web",
+    "start": "npm run start -w @urlm/bridge",
+    "test": "npm run test -w @urlm/core",
+    "test:all": "npm run test -w @urlm/core && npm run test -w @urlm/bridge && npm run test -w @urlm/web",
+    "typecheck": "npm run typecheck -w @urlm/core && npm run typecheck -w @urlm/bridge && npm run typecheck -w @urlm/web && npm run typecheck -w @urlm/mobile",
+    "dev:mobile": "npm run sync -w @urlm/mobile",
+    "build:apk": "npm run apk -w @urlm/mobile",
+    "build:apk:release": "npm run apk:release -w @urlm/mobile"
+  }
+}

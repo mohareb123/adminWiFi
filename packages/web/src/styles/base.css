@@ -1,0 +1,244 @@
+/*
+ * Universal Router Manager — design tokens, reset, background layers.
+ *
+ * Performance rules baked in:
+ *  - all chrome uses transform/opacity only (compositor-friendly);
+ *  - blur is capped by --blur-strength, which the SmoothnessEngine sets to 0
+ *    on weak devices / reduced transparency, so we never pay for glass we
+ *    cannot afford;
+ *  - every animation is opt-out via [data-animations='off'] and
+ *    [data-motion='reduced'].
+ *
+ * © 2026 Mohamed Ibrahim Abu El-Ezz — All Rights Reserved.
+ */
+
+:root {
+  color-scheme: dark;
+
+  --bg-0: #04060e;
+  --bg-1: #070b18;
+  --bg-2: #0b1224;
+  --surface: rgba(255, 255, 255, 0.045);
+  --surface-strong: rgba(255, 255, 255, 0.075);
+  --surface-solid: #101728;
+  --border: rgba(126, 178, 255, 0.16);
+  --border-strong: rgba(126, 178, 255, 0.3);
+
+  --text: #e8eeff;
+  --text-dim: #a9b6d4;
+  --text-faint: #7c88a8;
+
+  --accent: #4dd8ff;
+  --accent-2: #8b7cff;
+  --mint: #34e5b0;
+  --amber: #ffb94d;
+  --rose: #ff5f7a;
+  --ok: #35d99b;
+  --warn: #ffb94d;
+  --crit: #ff5d7a;
+
+  --radius-sm: 10px;
+  --radius: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 28px;
+
+  --blur-strength: 18px;
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-2: 0 12px 32px rgba(3, 8, 22, 0.55);
+  --shadow-glow: 0 0 0 1px rgba(77, 216, 255, 0.22), 0 12px 40px rgba(77, 216, 255, 0.12);
+
+  --font: 'Segoe UI', 'Noto Kufi Arabic', 'Noto Sans Arabic', Tahoma, system-ui, -apple-system, sans-serif;
+  --font-mono: 'Cascadia Mono', 'JetBrains Mono', Consolas, monospace;
+
+  --text-scale: 1;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur: 200ms;
+
+  --shell-max: 1440px;
+  --tabbar-h: 66px;
+}
+
+[data-text='large'] {
+  --text-scale: 1.14;
+}
+
+[data-contrast='high'] {
+  --text: #ffffff;
+  --text-dim: #d6e0ff;
+  --text-faint: #b5c2e0;
+  --border: rgba(160, 205, 255, 0.42);
+  --surface: rgba(255, 255, 255, 0.07);
+  --bg-0: #000208;
+  --bg-1: #04060f;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur: 0ms;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-0);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: calc(15px * var(--text-scale));
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeSpeed;
+  overflow-x: hidden;
+}
+
+/* The whole app sits on top of one fixed, GPU-cheap backdrop. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(1100px 700px at 85% -10%, rgba(77, 216, 255, 0.16), transparent 60%),
+    radial-gradient(900px 620px at 8% 8%, rgba(139, 124, 255, 0.16), transparent 62%),
+    radial-gradient(700px 520px at 50% 115%, rgba(52, 229, 176, 0.1), transparent 60%),
+    linear-gradient(180deg, var(--bg-1), var(--bg-0) 70%);
+  pointer-events: none;
+}
+
+[data-gradients='off'] body::before {
+  background: linear-gradient(180deg, var(--bg-1), var(--bg-0));
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: linear-gradient(rgba(126, 178, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(126, 178, 255, 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(90% 70% at 50% 20%, #000 35%, transparent 100%);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+[data-backdrop='off'] body::after {
+  display: none;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: 1.6rem;
+}
+h2 {
+  font-size: 1.25rem;
+}
+h3 {
+  font-size: 1.05rem;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+::selection {
+  background: rgba(77, 216, 255, 0.32);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(126, 178, 255, 0.22);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(126, 178, 255, 0.38);
+  background-clip: content-box;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  direction: ltr;
+  unicode-bidi: embed;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+  unicode-bidi: embed;
+  display: inline-block;
+}
+
+[data-animations='off'] *,
+[data-motion='reduced'] * {
+  animation: none !important;
+  transition-duration: 0ms !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition-duration: 0ms !important;
+  }
+}

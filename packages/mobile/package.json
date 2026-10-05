@@ -1,0 +1,26 @@
+{
+  "name": "@urlm/mobile",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Android shell for Universal Router Manager — runs the portable engine host on the phone (Capacitor), no desktop bridge required.",
+  "author": "Mohamed Ibrahim Abu El-Ezz",
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "cap": "cap",
+    "sync": "cap sync android",
+    "open": "cap open android",
+    "assets": "node scripts/generate-icons.mjs",
+    "apk": "npm run build -w @urlm/web && cap sync android && cd android && ./gradlew assembleDebug",
+    "apk:release": "npm run build -w @urlm/web && cap sync android && cd android && ./gradlew assembleRelease",
+    "typecheck": "echo \"@urlm/mobile: Android shell (Java) + Capacitor config — no TypeScript sources to type-check\""
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.2",
+    "@capacitor/core": "^6.2.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.2.2",
+    "sharp": "^0.33.5"
+  }
+}

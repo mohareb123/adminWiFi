@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-animations="on" data-gradients="on" data-glow="on" data-backdrop="on">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#04060e" />
+    <meta name="description" content="مدير الراوتر الشامل — نظام تكييف عالمي يتعرّف على أي راوتر تلقائيًا ويدير شبكتك بأمان. تطوير: محمد إبراهيم أبو العز." />
+    <meta name="author" content="Mohamed Ibrahim Abu El-Ezz" />
+    <meta name="copyright" content="© 2026 Mohamed Ibrahim Abu El-Ezz — All Rights Reserved." />
+    <title>مدير الراوتر الشامل — Universal Router Manager</title>
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <!-- The splash is painted from the document itself: no white flash, no waiting on JS. -->
+    <style>
+      html, body { margin: 0; background: #04060e; color: #e8eeff; font-family: 'Segoe UI', 'Noto Kufi Arabic', Tahoma, system-ui, sans-serif; }
+      #boot { position: fixed; inset: 0; display: grid; place-items: center; text-align: center; }
+      #boot .mark { width: 92px; height: 92px; border-radius: 50%; border: 2px solid rgba(126,178,255,.28); display: grid; place-items: center; font-size: 2rem;
+        box-shadow: 0 0 60px rgba(77,216,255,.25); animation: bootGlow 2.4s ease-in-out infinite; }
+      #boot h1 { font-size: 1.1rem; margin: 16px 0 4px; font-weight: 800; }
+      #boot p { margin: 0; color: #a9b6d4; font-size: .85rem; }
+      @keyframes bootGlow { 0%,100% { box-shadow: 0 0 30px rgba(77,216,255,.2) } 50% { box-shadow: 0 0 70px rgba(139,124,255,.4) } }
+      @media (prefers-reduced-motion: reduce) { #boot .mark { animation: none } }
+    </style>
+  </head>
+  <body>
+    <div id="boot">
+      <div>
+        <div class="mark" aria-hidden="true">🛰️</div>
+        <h1>مدير الراوتر الشامل</h1>
+        <p>جارٍ التشغيل…</p>
+      </div>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <noscript>
+      <p style="padding:24px;text-align:center">هذا التطبيق يحتاج JavaScript. يتم كل شيء على جهازك عبر الجسر المحلي.</p>
+    </noscript>
+  </body>
+</html>

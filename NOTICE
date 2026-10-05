@@ -1,0 +1,30 @@
+Universal Router Manager (URM)
+==================================================================
+
+© 2026 Mohamed Ibrahim Abu El-Ezz — All Rights Reserved.
+
+Developed by:
+  محمد إبراهيم أبو العز
+  Mohamed Ibrahim Abu El-Ezz
+
+This software is provided for the administration of network devices that you
+own or are explicitly authorized to administer.
+
+Trademarks and third-party components
+------------------------------------------------------------------
+* Router vendor names (Huawei, TP-Link, ZTE, D-Link, ASUS, MikroTik, Xiaomi,
+  Tenda, Netgear, Ubiquiti, Cisco, Linksys, ...) and firmware/UI identifiers
+  are trademarks of their respective owners. They are referenced here only for
+  interoperability and device-identification purposes.
+* This project does NOT claim ownership of any router firmware, vendor API, or
+  vendor management interface. Adapters perform documented, best-effort,
+  read/controlled-write operations against interfaces that the device owner is
+  entitled to use.
+* Open-source dependencies keep their own licenses; see docs/THIRD-PARTY.md.
+
+Prohibited use
+------------------------------------------------------------------
+This project must not be used for authentication bypass, brute-force attacks,
+credential theft, unauthorized access, or exploitation of devices you do not
+own or administer. The Universal Router Engine intentionally contains no such
+functionality.
