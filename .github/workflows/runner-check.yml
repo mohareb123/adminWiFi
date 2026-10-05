@@ -1,0 +1,12 @@
+name: Runner check
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['arena/**']
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "hosted runner is available"
