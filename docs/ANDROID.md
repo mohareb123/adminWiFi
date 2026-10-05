@@ -32,6 +32,8 @@ APK
 APKs are built automatically by [`.github/workflows/android.yml`](../.github/workflows/android.yml)
 on every push (`workflow_dispatch` also lets you re-run it by hand). No local Android SDK needed.
 
+**Direct link:** <https://github.com/mohareb123/adminWiFi/releases/tag/apk-latest>
+
 ## 2. What works on the phone
 
 | Area | On-device behaviour |
@@ -105,7 +107,27 @@ three are set up by the workflow.
 * **First connection** needs the phone on the router's Wi-Fi. A mobile-data connection cannot
   reach `192.168.x.x`, and the app says exactly that instead of failing silently.
 
-## 7. Safety and privacy on Android
+## 7. How the build proves itself
+
+Every CI build fails unless the packaged APK really contains what the app needs, and then
+publishes that proof in the release notes:
+
+* `assets/public/index.html` — the Arabic UI shell;
+* `assets/public/assets/device-runtime-*.js` — **the on-device engine** (if this chunk were
+  missing, the APK would need a desktop bridge, which is exactly what it must not);
+* `assets/capacitor.config.json` — the Capacitor bridge configuration;
+* `aapt2 dump badging` output: package id, version, target SDK and the exact permission list;
+* the APK's `sha256` and size.
+
+You can reproduce the same checks locally on any downloaded APK:
+
+```bash
+unzip -l universal-router-manager-1.0.0.apk | grep -E "device-runtime|index.html|capacitor.config"
+aapt2 dump badging universal-router-manager-1.0.0.apk | head -20
+sha256sum universal-router-manager-1.0.0.apk
+```
+
+## 8. Safety and privacy on Android
 
 * Only use the app on networks you own or are authorised to administer.
 * No brute force, no credential attacks, no login bypass, no exploitation — ever.
