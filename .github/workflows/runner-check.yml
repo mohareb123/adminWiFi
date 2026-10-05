@@ -1,12 +1,24 @@
 name: Runner check
 
+# Temporary probe: tells us which GitHub-hosted runner images this repository can
+# actually acquire. (If none can be acquired, the account/repository needs
+# attention in GitHub → Settings → Actions, or a self-hosted runner must be used.)
+
 on:
   workflow_dispatch:
   push:
     branches: ['arena/**']
 
 jobs:
-  probe:
+  ubuntu-latest:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "hosted runner is available"
+      - run: echo "ubuntu-latest ok"
+  ubuntu-22:
+    runs-on: ubuntu-22.04
+    steps:
+      - run: echo "ubuntu-22.04 ok"
+  ubuntu-24:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo "ubuntu-24.04 ok"
