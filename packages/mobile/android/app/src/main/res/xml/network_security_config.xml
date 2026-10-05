@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Router administration interfaces on a home LAN are overwhelmingly plain HTTP,
+  and many use a self-signed certificate when they do offer HTTPS. A router
+  manager that refused cleartext could not do its job at all, so cleartext is
+  permitted — but nothing else is: no user CA is trusted implicitly, and the app
+  never disables TLS verification globally.
+
+  © 2026 Mohamed Ibrahim Abu El-Ezz — All Rights Reserved.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>
