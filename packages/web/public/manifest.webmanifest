@@ -1,0 +1,23 @@
+{
+  "name": "مدير الراوتر الشامل — Universal Router Manager",
+  "short_name": "مدير الراوتر",
+  "description": "إدارة شبكتك المنزلية بذكاء: تعرّف تلقائي على الراوتر، تحكم في الأجهزة والواي فاي والأمان، وكل ذلك ببيانات تبقى على جهازك.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#04060e",
+  "theme_color": "#04060e",
+  "categories": ["utilities", "productivity"],
+  "author": "Mohamed Ibrahim Abu El-Ezz",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
