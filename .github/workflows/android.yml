@@ -54,8 +54,25 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Report and complete the Android SDK
+        # GitHub-hosted images already ship the Android SDK, so we only top up the
+        # exact packages this project compiles against (no third-party action to
+        # break the build).
+        run: |
+          set -x
+          export ANDROID_HOME="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+          export ANDROID_SDK_ROOT="$ANDROID_HOME"
+          echo "ANDROID_HOME=$ANDROID_HOME" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=$ANDROID_HOME" >> "$GITHUB_ENV"
+          ls "$ANDROID_HOME" || true
+          SDKMANAGER="$(ls -d "$ANDROID_HOME"/cmdline-tools/*/bin/sdkmanager 2>/dev/null | tail -1)"
+          echo "SDKMANAGER=$SDKMANAGER"
+          if [ -n "$SDKMANAGER" ]; then
+            yes | "$SDKMANAGER" --licenses > /dev/null 2>&1 || true
+            "$SDKMANAGER" "platform-tools" "platforms;android-34" "build-tools;34.0.0" || true
+          fi
+          ls "$ANDROID_HOME/platforms" || true
+          ls "$ANDROID_HOME/build-tools" || true
 
       - name: Install dependencies
         run: npm ci
