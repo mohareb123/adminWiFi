@@ -40,16 +40,16 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
@@ -203,7 +203,19 @@ jobs:
             echo
             cat verify.txt
           } > release-body.md
-          sed -i "s/\*\*توقيع الحزمة:\*\* \`فوق\`.*/**توقيع الحزمة:** $([ -n "${URLM_KEYSTORE_FILE:-}" ] && echo 'مفتاح إصدار خاص (repository secrets)' || echo 'مفتاح debug القياسي — أضف الأسرار URLM_KEYSTORE_BASE64 لتغييره')./" release-body.md
+          if [ -n "${URLM_KEYSTORE_FILE:-}" ]; then
+            SIGNING_LINE='* توقيع الحزمة: مفتاح إصدار خاص (repository secrets) — لا يمكن تحديث التطبيق إلا بنفس المفتاح.'
+          else
+            SIGNING_LINE='* توقيع الحزمة: مفتاح debug القياسي. يعمل فورًا للاستخدام الشخصي؛ ولإصدار خاص أضف الأسرار URLM_KEYSTORE_* (انظر docs/ANDROID.md).'
+          fi
+          SIGNING_LINE="$SIGNING_LINE" python3 - <<'PYEOF'
+          import os, pathlib
+
+          path = pathlib.Path('release-body.md')
+          text = path.read_text()
+          path.write_text(text.replace('* توقيع الحزمة: `فوق` — راجع docs/ANDROID.md.', os.environ['SIGNING_LINE']))
+          PYEOF
+          grep -n 'توقيع الحزمة' release-body.md
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
