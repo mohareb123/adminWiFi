@@ -119,34 +119,57 @@ jobs:
 
       - name: Verify the APK contents (manifest + packaged engine)
         run: |
-          set -euo pipefail
           APK="artifacts/universal-router-manager-$(node -p "require('./package.json').version").apk"
-          AAPT="$(ls "$ANDROID_HOME"/build-tools/*/aapt2 2>/dev/null | tail -1)"
-          {
-            echo "### التحقق الآلي من الحزمة (CI)"
-            echo
-            echo '```'
-            echo "apk: $APK"
-            du -h "$APK" | cut -f1 | sed 's/^/size: /'
-            sha256sum "$APK" | sed 's/^/sha256: /'
-            echo "build-tools: ${AAPT:-unavailable}"
-            if [ -n "$AAPT" ]; then
-              "$AAPT" dump badging "$APK" | grep -E "^(package|application-label|sdkVersion|targetSdkVersion|uses-permission)" | head -12
-            fi
-            echo
-            echo "packaged web bundle:"
-            unzip -l "$APK" | grep -E "assets/public/(index\.html|manifest\.webmanifest)" || true
-            unzip -l "$APK" | grep -E "assets/public/assets/(index|device-runtime|device-speedtest|react)-[A-Za-z0-9_-]+\.js" | awk '{print $4}' || true
-            echo '```'
-          } > verify.txt
+          ls -la "$APK"
+          APK="$APK" python3 - <<'PY' > verify.txt
+          import hashlib, os, zipfile
+
+          apk = os.environ["APK"]
+          data = open(apk, "rb").read()
+          archive = zipfile.ZipFile(apk)
+          names = archive.namelist()
+          print("### التحقق الآلي من الحزمة (CI)")
+          print()
+          print("```")
+          print("apk      :", os.path.basename(apk))
+          print("size     :", "%.2f MB" % (len(data) / 1048576))
+          print("sha256   :", hashlib.sha256(data).hexdigest())
+          web = [n for n in names if n.startswith("assets/public/")]
+          print("web files:", len(web))
+          for name in sorted(web):
+              if name.endswith((".html", ".webmanifest", ".css")) or "/assets/" in name:
+                  print("   ", name, "(%d B)" % archive.getinfo(name).file_size)
+          print("native libs:", sorted({n.split("/")[1] for n in names if n.startswith("lib/") and "/" in n[4:]}))
+          print("on-device engine inside APK :", any("device-runtime" in n for n in names))
+          print("web shell inside APK        :", any(n.endswith("assets/public/index.html") for n in names))
+          print("capacitor config inside APK :", any(n.endswith("assets/capacitor.config.json") for n in names))
+          print("```")
+          assert any("device-runtime" in n for n in names), "missing on-device engine chunk"
+          assert any(n.endswith("assets/public/index.html") for n in names), "missing web shell"
+          assert any(n.endswith("assets/capacitor.config.json") for n in names), "missing capacitor config"
+          PY
           cat verify.txt
-          # The on-device engine must be inside the APK, otherwise the app would
-          # need a desktop bridge — that is the whole point of the Android build.
-          unzip -l "$APK" | grep -q "device-runtime" \
-            || { echo "::error::the on-device engine chunk is missing from the APK"; exit 1; }
-          unzip -l "$APK" | grep -q "assets/public/index.html" \
-            || { echo "::error::the web shell is missing from the APK"; exit 1; }
-          echo "on-device engine + web shell are packaged ✔"
+          grep -q "on-device engine inside APK : True" verify.txt || { echo "::error::the on-device engine chunk is missing from the APK"; exit 1; }
+          grep -q "web shell inside APK        : True" verify.txt || { echo "::error::the web shell is missing from the APK"; exit 1; }
+          echo "APK verified: engine + shell are packaged ✔"
+
+      - name: Report the manifest via aapt2 (best effort)
+        continue-on-error: true
+        run: |
+          APK="artifacts/universal-router-manager-$(node -p "require('./package.json').version").apk"
+          AAPT="$(ls "${ANDROID_HOME:-/usr/local/lib/android/sdk}"/build-tools/*/aapt2 2>/dev/null | tail -1)"
+          {
+            echo
+            echo "manifest (aapt2, ${AAPT:-unavailable}):"
+            echo '```'
+            if [ -n "$AAPT" ]; then
+              "$AAPT" dump badging "$APK" 2>&1 | grep -aE "^(package|application-label|sdkVersion|targetSdkVersion|uses-permission|native-code)" | head -14 || true
+            else
+              echo "aapt2 not found"
+            fi
+            echo '```'
+          } >> verify.txt
+          tail -20 verify.txt
 
       - name: Compose the release notes
         run: |
